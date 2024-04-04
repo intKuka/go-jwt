@@ -2,5 +2,5 @@ package consts
 
 import "time"
 
-const AccessTokenTTL = time.Minute * 1
-const RefreshTokenTTL = time.Minute * 1 // 30 days
+const AccessTokenTTL = time.Minute * 10
+const RefreshTokenTTL = time.Hour * 24 * 30 // 30 days
