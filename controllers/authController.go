@@ -6,6 +6,7 @@ import (
 	"jwt-project/initializers"
 	"jwt-project/models"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -70,6 +71,13 @@ func RefreshToken(c *gin.Context) {
 	if err := bcrypt.CompareHashAndPassword([]byte(user.RefreshToken), []byte(body.RefreshToken)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid refresh token",
+		})
+		return
+	}
+
+	if time.Now().Unix() > user.ExpiresAt.Unix() {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Token is expired",
 		})
 		return
 	}
